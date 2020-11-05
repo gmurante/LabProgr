@@ -35,7 +35,7 @@ int strend(char* s,
   
   /* move s to (strlen(s) - strlen(t)) */
   s += (s_length - t_length);
-
+  
   /* move s checking if string t occurs at its end */
   /* while loop stops when *s == '\0'              */
   while ((*s) && (*s++ == *t++));
