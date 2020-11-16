@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #if defined(_OPENMP)
 #   include <omp.h>
