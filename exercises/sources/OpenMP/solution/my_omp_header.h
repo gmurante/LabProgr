@@ -17,6 +17,9 @@
 #   define omp_set_num_threads(ignore) ((void) 0)
 #   define omp_get_thread_num()        0
 #   define omp_get_num_threads()       1
+#   define omp_get_wtime()             0.0
+#   define omp_get_max_threads()       1
+#   define omp_get_num_procs()         1
 #endif /* _OPENMP */
 
 #endif /* MY_OMP_HEADER */
