@@ -28,7 +28,7 @@
 #include "my_omp_header.h"
 
 /* number of steps */
-const unsigned long int num_steps = 1000000000;
+unsigned long int num_steps = 1000000000;
 typedef double MyFloat;
 
 int main (int argc, char *argv[])
