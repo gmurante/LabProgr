@@ -56,7 +56,7 @@ void matmul(MyFloat *restrict  A,
 	    MyFloat *restrict  C,
 	    const unsigned int size)
 {
-#pragma omp for /* trivial way to parallelize over i */
+#pragma omp for nowait /* trivial way to parallelize over i */
   for (unsigned int i=0 ; i<size ; i++)
     {
       for (unsigned int j=0 ; j<size ; j++)
@@ -153,8 +153,12 @@ int main(int argc, char *argv[])
   /* free memory */
   free(buffer);
 
-  printf("\n\t Time-to-solution: %lg \n\n",
+  printf("\n\t Time-to-solution: %lg ",
 	 (end - start));
+  
+  const double mflops = 2.0 * (ORDER * ORDER * ORDER) / (1.e6 * (end - start));
+  printf("\n\t Order %d multiplication at %lg mflops \n\n",
+	 ORDER, mflops);
   
   return 0;
 }

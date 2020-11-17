@@ -45,7 +45,7 @@ int main (int argc, char *argv[])
 
   /* accumulator. OMP initiliazes it at zero since a sum reduction will be performed */
   MyFloat sum;
-#pragma omp parallel default(none) shared(step,sum) num_threads(num_threads)
+#pragma omp parallel default(none) shared(step,sum,num_steps) num_threads(num_threads)
   {
 #  pragma omp single nowait
     {
