@@ -1,4 +1,4 @@
-# Laboratory on advanced computing for Physic
+# Laboratory on advanced computing for Physics
 
 Laboratory is organised in 72 hours laboratory activities
 
