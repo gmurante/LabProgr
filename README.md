@@ -6,9 +6,13 @@ Folder Structure
 ============================
 .
     ├── docs                    # Documentation files
+    
     ├── exame                   # final exame excercises
+    
     ├── excercises              # C code sources  
+    
     ├── lectures                # notebook format lectures notes
+    
     └── README.md
 
 ### docs directory
