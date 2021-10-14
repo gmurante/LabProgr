@@ -5,8 +5,9 @@ Laboratory is organised in 72 hours laboratory activities
 Folder Structure
 ============================
 
-.
+
     ├── docs                    # Documentation file
+    
     ├── exame                   # final exame excercises
     
     ├── excercises              # C code sources  
