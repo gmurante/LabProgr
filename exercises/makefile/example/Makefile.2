@@ -1,0 +1,14 @@
+
+CC = gcc
+CFLAGS = -g -fno-omit-frame-pointer
+
+HEADERS = myheader.h
+
+%.o: %.c $(HEADERS) Makefile
+	$(CC) $(CFLAGS) -c $< -o $@
+
+testmake: main.o welcome.o check_args.o
+	${CC} $(CFLAGS) -o testmake main.c welcome.c check_args.c -lm
+
+clean:
+	@rm -f  main.o welcome.o check_args.o testmake *~

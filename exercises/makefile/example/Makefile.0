@@ -1,0 +1,3 @@
+
+testmake: main.o welcome.o check_args.o
+	gcc -o testmake main.c welcome.c check_args.c -lm

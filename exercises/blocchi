@@ -1,0 +1,25 @@
+POS	positions
+VEL	velocities
+ID	labels
+MASS	masses
+U	internal energies
+RHO	densities
+NE	electron number densities
+NH	proton number densities
+HSML	smoothing lengths
+SFR	star formation rates
+AGE	star ages
+ACRS	star smoothing lenght
+POT	gravitational potentials
+MHOT	hot gas mass
+MCLD	cold gas mass
+EHOT	hot gass energies
+MSF	stellar masses in gas
+MFST	number of multi-phase time steps
+NMF	number of multi-phase stages
+iM	initial stellas masses
+Zs	gas and star metallicities
+ZAge	metals ages
+TEMP	temperatures
+DETI	wind particle ages
+INFO	infos block

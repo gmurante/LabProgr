@@ -1,0 +1,26 @@
+
+#OPTIMIZE = YES
+
+EXEC = testmake
+CC = gcc
+
+ifdef OPTIMIZE    # this only tests whether OPTIMIZE is defined
+CFLAGS = -O3 -march=native -faggressive-loop-optimizations
+else
+CFLAGS = -g -fno-omit-frame-pointer
+endif
+
+LIBS = m
+LIBDIR = /usr/lib/
+
+HEADERS = myheader.h
+OBJS = main.o welcome.o check_args.o
+
+%.o: %.c $(HEADERS) Makefile
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(EXEC): $(OBJS) Makefile
+	${CC} $(CFLAGS) -o $(EXEC) $(OBJS) -L$(LIBDIR) -l$(LIBS)
+
+clean:
+	@rm -f $(OBJS) $(EXEC) *~

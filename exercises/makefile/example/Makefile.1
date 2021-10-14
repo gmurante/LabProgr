@@ -1,0 +1,6 @@
+
+CC = gcc
+CFLAGS = -g –fno-omit-frame-pointer
+
+testmake: main.o welcome.o check_args.o
+	${CC} $(CFLAGS) -o $(EXEC) $(OBJS) -L$(LIBDIR) -l$(LIBS)
