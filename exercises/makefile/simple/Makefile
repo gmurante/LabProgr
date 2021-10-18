@@ -10,4 +10,4 @@ try.c:
 	echo "int main(void) {return 1;}" > try.c
 
 clean:
-	rm -f try.c try
+	rm -f try.c try.o try
