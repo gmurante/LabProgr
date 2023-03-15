@@ -1,9 +1,24 @@
+/************************************************************************/
+/* Course: Advanced Programming for Physics                             */
+/************************************************************************/
+/* The program shows how to dynamically allocate a buffer onto the heap */
+/*                                                                      */
+/* Compile the code using the command:                                  */
+/* $ gcc -Wall -Wextra dynamic_memory.c -o dynamic_memory               */
+/*                                                                      */
+/* Run the program using the command:                                   */
+/* $ ./dynamic_memory                                                   */
+/*                                                                      */
+/* Author: David Goz - david.goz@inaf.it                                */
+/* Date: 15th March 2023                                                */
+/************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
 typedef double MyData;
-#define N (1 << 8)
+#define N (1 << 22)
 #define FROM_BYTES_TO_KBYTES (1.0 / 1024.)
 
 int main()
@@ -24,6 +39,9 @@ int main()
       printf("\n\t Allocation failed ... aborting ... \n");
       return EXIT_FAILURE;
     }
+  else
+    printf("\n\t Allocated on the heap %lg kbytes starting at address %p \n\n",
+	   (N * sizeof(MyData) * FROM_BYTES_TO_KBYTES), array);
 
   /* ... do something ...*/
 
