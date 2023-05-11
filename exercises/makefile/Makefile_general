@@ -1,0 +1,76 @@
+CC              = gcc -march=native
+CFLAGS_OPT      = -Wall -Wextra
+CFLAGS          = $(CFLAGS_OPT) -O3
+CFLAGS_DEBUG    = $(CFLAGS_OPT) -Og -ggdb3 -fno-omit-frame-pointer
+CFLAGS_OMP      = $(CFLAGS_OPT) -O3 -fopenmp
+CFLAGS_VALGRIND = $(CFLAGS_OPT) -O3 -g
+
+SYSTYPE         = $(strip $(shell uname -n))
+PROG            = myProg
+PROG_DEBUG      = $(PROG)_debug
+PROG_OMP        = $(PROG)_OMP
+PROG_CALLGRIND  = $(PROG)_CALLGRIND
+
+HEADERS      = $(wildcard ./*.h)
+SOURCES      = $(wildcard ./*.c)
+DEPENDENCIES = Makefile $(SOURCES) $(HEADERS)
+
+# INC_DIR = ./
+# LIB_DIR = ./
+
+LIBS = -lm
+
+.PHONY: info clean debug all omp callgrind
+
+all: $(PROG)
+
+$(PROG): $(DEPENDENCIES)
+	$(CC) $(CFLAGS) $(INC) $(SOURCES) -o $@ $(LIBS)
+	@echo ''
+	@echo 'Program' $(PROG) 'compiled for' $(SYSTYPE) 'machine'
+	@echo ''
+
+$(PROG_DEBUG): $(DEPENDENCIES)
+	$(CC) $(CFLAGS_DEBUG) $(INC) $(SOURCES) -o $@ $(LIBS)
+	@echo ''
+	@echo 'Program' $(PROG_DEBUG) 'compiled for' $(SYSTYPE) 'machine'
+	@echo ''
+
+$(PROG_OMP): $(DEPENDENCIES)
+	$(CC) $(CFLAGS_OMP) $(INC) $(SOURCES) -o $@ $(LIBS)
+	@echo ''
+	@echo 'Program' $(PROG_OMP) 'compiled for' $(SYSTYPE) 'machine'
+	@echo ''
+
+$(PROG_CALLGRIND): $(DEPENDENCIES)
+	$(CC) $(CFLAGS_VALGRIND) $(INC) $(SOURCES) -o $@ $(LIBS)
+	@echo ''
+	@echo 'Program' $(PROG_CALLGRIND) 'compiled for' $(SYSTYPE) 'machine'
+	@echo ''
+
+clean:
+	rm -rf $(PROG) $(PROG_DEBUG) $(PROG_OMP) *~
+
+info:
+	@echo ''
+	@echo '---------------------------------------------------------------------------------'
+	@echo '$$ make           ---> compile the application                                   '
+	@echo '$$ make omp       ---> compile the application exploiting OpenMP                 '
+	@echo '$$ make debug     ---> compile the application for debugging                     '
+	@echo '$$ make info      ---> get make info                                             '
+	@echo '$$ make clean     ---> clean up all                                              '
+	@echo '$$ make callgrind ---> run the serial application using Valgrind under Callgrind '
+	@echo '---------------------------------------------------------------------------------'
+	@echo ''
+
+debug: $(PROG_DEBUG)
+omp: $(PROG_OMP)
+callgrind: $(PROG_CALLGRIND)
+	@echo 'oooOOO... valgrind_callgrind ...OOOooo'
+	valgrind --tool=callgrind -v --dump-instr=yes --collect-jumps=yes --gen-suppressions=yes --read-inline-info=yes --log-file=valgrind_callgrind_log_.%p.txt ./$<
+	@echo ' '
+	@echo 'To generate a function-by-function summary from the profile data file:'
+	@echo '$$ callgrind_annotate --auto=yes callgrind.out.<pid> | less'
+	@echo '(kcachegrind is required in order to visualize the output using the GUI)'
+	@echo 'oooOOO..........................OOOooo'
+
