@@ -30,7 +30,7 @@ int main( int argc, char **argv)
   int nthreads;
   #pragma omp parallel
   {
-    double mytiming = ThCPU_TIME;
+    //double mytiming = ThCPU_TIME;
     
     int me = omp_get_thread_num();
     if ( me == 0 )
@@ -42,27 +42,24 @@ int main( int argc, char **argv)
     uint reminder = N % nthreads;
     uint mystart, myend;
 
-    // ternary operator
-    // ( conditional statement ? true_branch : false_branch )
-    
     mystart = chunk*me + (me<reminder ? me : reminder);
     myend   = mystart + chunk + (me < reminder);
-
-    printf ("thread %d has been assigned with iterations from %u to %u\n",
-	    me, mystart, myend );
     
     for ( uint i = mystart; i < myend; i++ )
       array[i] = i;
-    
+
+    unsigned long long mysum = 0;
     for ( uint i = mystart; i < myend; i++ )
-     #pragma omp atomic update
-      sum += array[i];
+      mysum += array[i];
 
+   #pragma omp atomic
+    sum += mysum; 
+    
+    /*
     mytiming = ThCPU_TIME - mytiming;
-
    #pragma omp barrier
     printf("\tthread %d run in %g sec\n", mytiming);
-    
+    */
   }
 
   timing = ThCPU_TIME - timing;
@@ -81,7 +78,8 @@ int main( int argc, char **argv)
   
 
   
-  printf("and eventually we've got %s result in %g seconds!\n",
+  printf("and eventually we've got %llu : %s result in %g seconds!\n",
+	 sum,
 	 ((sum == (unsigned long long)N*(N-1)/2) ? "the correct" : "a crap"), timing );
 
   free ( array );
