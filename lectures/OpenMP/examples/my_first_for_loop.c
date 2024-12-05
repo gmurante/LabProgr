@@ -30,6 +30,8 @@ int main( int argc, char **argv)
   int nthreads;
   #pragma omp parallel
   {
+    double mytiming = ThCPU_TIME;
+    
     int me = omp_get_thread_num();
     if ( me == 0 )
       nthreads = omp_get_num_threads();
@@ -56,6 +58,11 @@ int main( int argc, char **argv)
      #pragma omp atomic update
       sum += array[i];
 
+    mytiming = ThCPU_TIME - mytiming;
+
+   #pragma omp barrier
+    printf("\tthread %d run in %g sec\n", mytiming);
+    
   }
 
   timing = ThCPU_TIME - timing;
