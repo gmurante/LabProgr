@@ -7,6 +7,9 @@
 #define TCPU_TIME ({struct timespec ts; (clock_gettime( CLOCK_PROCESS_CPUTIME_ID, &ts ), (double)ts.tv_sec + \
                                          (double)ts.tv_nsec * 1e-9);})
 
+#define ThCPU_TIME ({struct timespec ts; (clock_gettime( CLOCK_THREAD_CPUTIME_ID, &ts ), (double)ts.tv_sec + \
+                                         (double)ts.tv_nsec * 1e-9);})
+
 
 typedef unsigned int uint;
 
@@ -18,9 +21,11 @@ int main( int argc, char **argv)
   uint *array = (uint*)malloc( N*sizeof(uint) );
   unsigned long long int sum = 0;
 
-  double timing = TCPU_TIME;
+  
   
 #if defined _OPENMP
+
+  double timing = ThCPU_TIME;
   
   int nthreads;
   #pragma omp parallel
@@ -29,7 +34,7 @@ int main( int argc, char **argv)
     if ( me == 0 )
       nthreads = omp_get_num_threads();
     
-   #pragma omp barrier;
+   #pragma omp barrier
 
     uint chunk    = N / nthreads;    
     uint reminder = N % nthreads;
@@ -53,21 +58,24 @@ int main( int argc, char **argv)
 
   }
 
+  timing = ThCPU_TIME - timing;
  #else
-  
-  for ( uint i = mystart; i < myend; i++ )
+
+  double timing = TCPU_TIME;
+  for ( uint i = 0; i < N; i++ )
     array[i] = i;
   
-  for ( uint i = mystart; i < myend; i++ )
+  for ( uint i = 0; i < N; i++ )
     sum += array[i];
-  
- #endif
 
   timing = TCPU_TIME - timing;
+ #endif
+
+  
 
   
   printf("and eventually we've got %s result in %g seconds!\n",
-	 (sum == N*(N-1)/2 ? "the correct" : "a crap") );
+	 ((sum == (unsigned long long)N*(N-1)/2) ? "the correct" : "a crap"), timing );
 
   free ( array );
   
